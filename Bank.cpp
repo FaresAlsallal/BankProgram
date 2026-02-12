@@ -1,5 +1,10 @@
 
 
+
+
+	
+
+		
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -9,11 +14,13 @@
 #include <limits>
 
 using namespace std;
+
 struct StClient
 {
 	string AccountNumber, Name, Phone, PinCode;
 	double AccountBalance = 0;
 };
+
 vector<string> SplitWords(string Text, string Delim)
 {
 	vector<string> words;
@@ -35,6 +42,7 @@ vector<string> SplitWords(string Text, string Delim)
 
 	return words;
 }
+
 StClient ConvertLineDataToRecord(string Text)
 {
 	StClient Client;
@@ -77,6 +85,7 @@ string ConvertRecordToLine(const StClient& Client)
 
 	return out.str();
 }
+
 vector <StClient> LoadClientDataFromFile(const string& FileName)
 {
 	vector <StClient> ClientsData;
@@ -101,7 +110,7 @@ vector <StClient> LoadClientDataFromFile(const string& FileName)
 	return ClientsData;
 
 }
-void LoadDataToFile(string FileName, string Data)
+void LoadDataToFile(const string& FileName, const string& Data)
 {
 	fstream ClientsFile;
 
@@ -113,6 +122,21 @@ void LoadDataToFile(string FileName, string Data)
 		ClientsFile.close();
 	}
 }
+void SaveClientsToFile(const string& FileName, const vector<StClient>& Clients)
+{
+	fstream File;
+	File.open(FileName, ios::out);
+
+	if (File.is_open())
+	{
+		for (const StClient& Client : Clients)
+		{
+			File << ConvertRecordToLine(Client) << endl;
+		}
+		File.close();
+	}
+}
+
 bool IsClientExisting(string AccountNumber, const vector <StClient>& Clients)
 {
 
@@ -150,16 +174,16 @@ double ReadValidBalance()
 
 	}
 }
-short ReadValidOperationNum()
+short ReadValidOperationNum(short NumberOfOperations)
 {
 	short Number;
 
 	while (true)
 	{
-		cout << "Choose What Do You Want To Do [1 - 6] ? ";
+		cout << "Choose What Do You Want To Do [1 - " << NumberOfOperations << "]";
 		cin >> Number;
 
-		if (!cin.fail() && Number >= 1 && Number <= 6)
+		if (!cin.fail() && Number >= 1 && Number <= NumberOfOperations)
 		{
 
 			return Number;
@@ -167,7 +191,7 @@ short ReadValidOperationNum()
 		else
 		{
 
-			cout << "\nIncorrect Answer, Please Choose (1 To 6)!!\n";
+			cout << "\nIncorrect Answer, Please Choose (1 To " << NumberOfOperations << ") !!\n";
 
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -184,7 +208,7 @@ string ReadAccountNumber()
 
 	return AccountNumber;
 }
-StClient ReadClientDataToAdd(const string& FileName, const vector <StClient>& Clients)
+StClient ReadClientDataToAdd(const vector <StClient>& Clients)
 {
 	StClient Client;
 
@@ -210,7 +234,7 @@ StClient ReadClientDataToAdd(const string& FileName, const vector <StClient>& Cl
 
 	return Client;
 }
-StClient ReadClientDataToUpdate(const string& FileName)
+StClient ReadClientDataToUpdate()
 {
 	StClient Client;
 
@@ -232,8 +256,24 @@ StClient ReadClientDataToUpdate(const string& FileName)
 }
 short ReadOperationType()
 {
-	return ReadValidOperationNum();
+	return ReadValidOperationNum(7);
 }
+short ReadTransactionType()
+{
+	return ReadValidOperationNum(4);
+}
+
+double TotalBalances(const vector <StClient>& Clients)
+{
+	double Total = 0;
+
+	for (const StClient& Client : Clients)
+	{
+		Total += Client.AccountBalance;
+	}
+	return Total;
+}
+
 void PrintClientRecord(const StClient& Client)
 {
 	cout << "\nThe Following Are The Client Details:\n";
@@ -255,7 +295,14 @@ void PrintClientRecordOfLine(const StClient& Client)
 	cout << "|  " << setw(12) << left << fixed << setprecision(2) << Client.AccountBalance;
 
 }
-void PrintClientsRecordOfLines(const vector <StClient>& Clients)
+void PrintClientBalanceOfLine(const StClient& Client)
+{
+	cout << "|  " << setw(15) << left << Client.AccountNumber;
+	cout << "|  " << setw(40) << left << Client.Name;
+	cout << "|  " << setw(12) << left << fixed << setprecision(2) << Client.AccountBalance;
+
+}
+void PrintClientsOfList(const vector <StClient>& Clients)
 {
 	cout << "\n\t\t\t\t\tClients List (" << Clients.size() << ")(s)." << endl;
 	cout << "______________________________________________________________________________________________________\n";
@@ -274,40 +321,83 @@ void PrintClientsRecordOfLines(const vector <StClient>& Clients)
 	cout << "\n______________________________________________________________________________________________________\n\n";
 
 }
-enum enOperationType { Show = 1, Add = 2, Delete = 3, Update = 4, Find = 5, Exit = 6 };
+void PrintBalancesOfList(const vector <StClient>& Clients)
+{
+	cout << "\n\t\t\t\t\tBalances List (" << Clients.size() << ")(s)." << endl;
+	cout << "______________________________________________________________________________________________________\n";
+	cout << "|  " << setw(15) << left << "Account Number";
+	cout << "|  " << setw(40) << left << "Client Name";
+	cout << "|  " << setw(12) << left << fixed << setprecision(2) << "Balance";
+	cout << "\n\n______________________________________________________________________________________________________\n\n";
+
+	for (const StClient& Client : Clients)
+	{
+		PrintClientBalanceOfLine(Client);
+		cout << endl;
+	}
+	cout << "\n______________________________________________________________________________________________________\n\n";
+
+}
+enum enOperationType { enShow = 1, enAdd = 2, enDelete = 3, enUpdate = 4, enFind = 5, enTransactions = 6, enExit = 7 };
+enum enTransactionsType { enDeposit = 1, enWithdraw = 2, enShowBalances = 3, enMainMenu = 4 };
+
 bool ConfirmOperation(string OperationType)
 {
-	char Awnser;
+	char Answer;
 
 
 	while (true)
 	{
 		cout << "\n\nAre You sure You Want " << OperationType << " This Client (Y/N) : ";
-		cin >> Awnser;
+		cin >> Answer;
 
-		Awnser = toupper(Awnser);
+		Answer = toupper(Answer);
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		if (Awnser == 'Y')
+		if (Answer == 'Y')
 			return true;
-		else if (Awnser == 'N')
+		else if (Answer == 'N')
 			return false;
 		else
 		{
-			cout << "Invalid Awnser Please Answer with (Y/N)\n";
+			cout << "Invalid Answer Please Answer with (Y/N)\n";
+
+		}
+	}
+}
+bool ConfirmTransaction()
+{
+	char Answer;
+
+
+	while (true)
+	{
+		cout << "\n\nAre You sure You Want To Perform This Transaction (Y/N) :";
+		cin >> Answer;
+
+		Answer = toupper(Answer);
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+		if (Answer == 'Y')
+			return true;
+		else if (Answer == 'N')
+			return false;
+		else
+		{
+			cout << "Invalid Answer Please Answer with (Y/N)\n";
 
 		}
 	}
 }
 bool AddAnotherClient()
 {
-	char YesNo;
-	cout << "\nClient Add Successfully, Do You Want To Add More Clients (Y/N) ?\n";
-	cin >> YesNo;
+	char UserChoice;
+	cout << "\nClient Added Successfully, Do You Want To Add More Clients (Y/N) ?\n";
+	cin >> UserChoice;
 
-	if (YesNo == 'Y' || YesNo == 'y')
+	if (UserChoice == 'Y' || UserChoice == 'y')
 		return true;
-	else if (YesNo == 'N' || YesNo == 'n')
+	else if (UserChoice == 'N' || UserChoice == 'n')
 		return false;
 	else
 	{
@@ -315,6 +405,7 @@ bool AddAnotherClient()
 		return AddAnotherClient();
 	}
 }
+
 StClient FindClient(const vector <StClient>& Clients, string AccountNumber)
 {
 	StClient ClientFound;
@@ -329,25 +420,24 @@ StClient FindClient(const vector <StClient>& Clients, string AccountNumber)
 	}
 	return StClient{};
 }
-void AddClient(const string& FileName)
+void AddClient(vector <StClient>& Clients)
 {
-	vector <StClient> Clients = LoadClientDataFromFile(FileName);
+
 	do {
 
 
 
-		StClient StData = ReadClientDataToAdd(FileName, Clients);
+		StClient StData = ReadClientDataToAdd(Clients);
 
-		string Data = ConvertRecordToLine(StData);
+		Clients.push_back(StData);
 
 
-		LoadDataToFile(FileName, Data);
+
 
 	} while (AddAnotherClient());
 }
-void DeleteClient(const string& FileName)
+void DeleteClient(vector <StClient>& Clients)
 {
-	vector <StClient> Clients = LoadClientDataFromFile(FileName);
 	string AccountNumber = ReadAccountNumber();
 	if (IsClientExisting(AccountNumber, Clients))
 	{
@@ -355,29 +445,25 @@ void DeleteClient(const string& FileName)
 		PrintClientRecord(ClientFound);
 		if (ConfirmOperation("Delete"))
 		{
-			fstream ClientsFile;
-
-			ClientsFile.open(FileName, ios::out);
-			if (ClientsFile.is_open())
+			for (int i = 0; i < Clients.size(); i++)
 			{
-				for (const StClient& Client : Clients)
+				if (Clients[i].AccountNumber == AccountNumber)
 				{
-					if (Client.AccountNumber != AccountNumber)
-						ClientsFile << ConvertRecordToLine(Client) << endl;
-
+					Clients.erase(Clients.begin() + i);
+					cout << "\n\nClient Deleted Successfully.\n";
+					return;
 				}
-				ClientsFile.close();
-				cout << "\n\nClient Deleted Successfully.\n";
 			}
+
+
 		}
 
 	}
 	else
 		cout << "Client With Account Number (" << AccountNumber << ") Not Found!\n";
 }
-void UpdateClientData(const string& FileName)
+void UpdateClientData(vector <StClient>& Clients)
 {
-	vector <StClient> Clients = LoadClientDataFromFile(FileName);
 	string AccountNumber = ReadAccountNumber();
 	if (IsClientExisting(AccountNumber, Clients))
 	{
@@ -386,70 +472,184 @@ void UpdateClientData(const string& FileName)
 		PrintClientRecord(ClientFound);
 		if (ConfirmOperation("Update"))
 		{
-			fstream ClientsFile;
 			cout << endl;
-			ClientsFile.open(FileName, ios::out);
-			if (ClientsFile.is_open())
+
+
+
+			for (StClient& Client : Clients)
 			{
-				for (const StClient& Client : Clients)
+				if (Client.AccountNumber == AccountNumber)
 				{
-					if (Client.AccountNumber == AccountNumber)
-					{
-
-
-						UpdateClientData = ReadClientDataToUpdate(FileName);
-						UpdateClientData.AccountNumber = AccountNumber;
-						ClientsFile << ConvertRecordToLine(UpdateClientData) << endl;
-					}
-					else
-						ClientsFile << ConvertRecordToLine(Client) << endl;
-
+					StClient Updated = ReadClientDataToUpdate();
+					Updated.AccountNumber = AccountNumber;
+					Client = Updated;
+					cout << "\n\nClient Updated Successfully.\n";
+					return;
 				}
-				ClientsFile.close();
-				cout << "\n\nClient Updated Successfully.\n";
 			}
+
 		}
 
 	}
 	else
 		cout << "Client With Account Number (" << AccountNumber << ") Not Found!\n";
 }
-void ShowClientsScreen(const string& FileName)
+
+void Deposit(vector <StClient>& Clients, const short& Maximum)
 {
-	vector <StClient> Clients = LoadClientDataFromFile(FileName);
-	PrintClientsRecordOfLines(Clients);
+
+	double DepositAmount;
+	string AccountNumber = ReadAccountNumber();
+	if (IsClientExisting(AccountNumber, Clients))
+	{
+
+
+		StClient ClientFound = FindClient(Clients, AccountNumber);
+		PrintClientRecord(ClientFound);
+
+
+
+
+
+		for (StClient& Client : Clients)
+		{
+			if (Client.AccountNumber == AccountNumber)
+			{
+				bool Loop = true;
+				while (Loop)
+				{
+					cout << "Please Enter Deposit Amount? ";
+					cin >> DepositAmount;
+					if (DepositAmount <= Maximum)
+					{
+
+						if (ConfirmTransaction())
+						{
+							Client.AccountBalance += DepositAmount;
+							cout << "\n\nDone Successfully, New Balance Is : " << Client.AccountBalance << endl;
+							Loop = false;
+						}
+
+
+					}
+					else
+					{
+						cout << "Maximum Deposit Per Transaction Is  " << Maximum << " Please Choose The Correct Amount!!" << endl;
+					}
+				}
+			}
+
+
+
+		}
+
+
+
+	}
+	else
+		cout << "Client With Account Number (" << AccountNumber << ") Not Found!\n";
+
 }
-void AddClientScreen(const string& FileName)
+void Withdraw(vector <StClient>& Clients, const short& Maximum)
+{
+	double WithdrawAmount;
+
+	string AccountNumber = ReadAccountNumber();
+	if (IsClientExisting(AccountNumber, Clients))
+	{
+		StClient ClientFound = FindClient(Clients, AccountNumber);
+		PrintClientRecord(ClientFound);
+
+		for (StClient& Client : Clients)
+		{
+			if (Client.AccountNumber == AccountNumber)
+			{
+				bool Loop = true;
+				while (Loop)
+				{
+					cout << "Please Enter Withdraw Amount? ";
+					cin >> WithdrawAmount;
+					if (WithdrawAmount <= Maximum)
+					{
+						if (Client.AccountBalance >= WithdrawAmount)
+						{
+
+							if (ConfirmTransaction())
+							{
+								Client.AccountBalance -= WithdrawAmount;
+								cout << "\n\nDone Successfully, New Balance Is : " << Client.AccountBalance << endl;
+								Loop = false;
+							}
+
+
+						}
+						else
+						{
+							cout << "Amount Exceeds The Balance , You Can Withdraw Up To : " << Client.AccountBalance << endl;
+						}
+					}
+					else
+					{
+						cout << "Maximum Withdraw Per Transaction Is  " << Maximum << " Please Choose The Correct Amount!!" << endl;
+
+					}
+				}
+			}
+
+
+		}
+
+
+
+	}
+	else
+		cout << "Client With Account Number (" << AccountNumber << ") Not Found!\n";
+
+
+
+}
+
+void ShowClientsList(vector <StClient>& Clients)
+{
+
+	PrintClientsOfList(Clients);
+}
+void ShowBalancesList(vector <StClient>& Clients)
+{
+	PrintBalancesOfList(Clients);
+	cout << "\t\t\t\t   Total Balances = " << TotalBalances(Clients) << "\n\n";
+}
+void AddClientScreen(vector <StClient>& Clients)
 {
 	cout << "\n-------------------------------------\n";
 	cout << "\tAdd New Clients Screen";
 	cout << "\n-------------------------------------\n";
 	cout << "Adding New Client :\n\n";
 
-	AddClient(FileName);
+	AddClient(Clients);
 
 
 }
-void DeleteClientScreen(const string& FileName)
+void DeleteClientScreen(vector <StClient>& Clients)
 {
 	cout << "\n-------------------------------------\n";
 	cout << "\tDelete Clients Screen";
 	cout << "\n-------------------------------------\n";
-	DeleteClient(FileName);
+	DeleteClient(Clients);
 }
-void UpdateClientScreen(const string& FileName)
+void UpdateClientScreen(vector <StClient>& Clients)
 {
 	cout << "\n-------------------------------------\n";
 	cout << "\tUpdate Clients Screen";
 	cout << "\n-------------------------------------\n\n";
-	UpdateClientData(FileName);
+	UpdateClientData(Clients);
 }
-void FindClientScreen(const string& FileName)
+void FindClientScreen(vector <StClient>& Clients)
 {
 	cout << "\n-------------------------------------\n";
 	cout << "\tFind Clients Screen";
 	cout << "\n-------------------------------------\n\n";
-	vector <StClient>Clients = LoadClientDataFromFile(FileName);
+
 	string  AccountNumber = ReadAccountNumber();
 	StClient Client = FindClient(Clients, AccountNumber);
 	if (IsClientExisting(AccountNumber, Clients))
@@ -462,94 +662,200 @@ void ExitScreen()
 	cout << "\n-------------------------------------\n";
 	cout << "\tProgram End :-)";
 	cout << "\n-------------------------------------\n\n";
+	system("pause>0");
 }
-void MainMenueScreen()
+void MainMenuScreen()
 {
 	system("cls");
 	cout << "===========================================\n";
-	cout << "            Main Menue Screen\n";
+	cout << "            Main Menu Screen\n";
 	cout << "===========================================\n";
 	cout << "\t[1] Show Clients List.\n";
 	cout << "\t[2] Add New Client.\n";
 	cout << "\t[3] Delete Client.\n";
 	cout << "\t[4] Update Client Info.\n";
 	cout << "\t[5] Find Client.\n";
-	cout << "\t[6] Exit.\n";
+	cout << "\t[6] Transactions.\n";
+	cout << "\t[7] Exit.\n";
 	cout << "===========================================\n";
 
 }
-void ReturnMainMenueScreen()
+void TransactionsMenuScreen()
 {
-	cout << "Press Any Key To Go Back To Main Menu...";
+	system("cls");
+	cout << "===========================================\n";
+	cout << "         Transactions Menu Screen\n";
+	cout << "===========================================\n";
+	cout << "\t[1] Deposit.\n";
+	cout << "\t[2] Withdraw.\n";
+	cout << "\t[3] Total Balances.\n";
+	cout << "\t[4] Main Menu.\n";
+	cout << "===========================================\n";
+}
+
+
+void DepositScreen(vector <StClient>& Clients)
+{
+	cout << "\n-------------------------------------\n";
+	cout << "\tDeposit Screen";
+	cout << "\n-------------------------------------\n\n";
+	Deposit(Clients, 10000);
+}
+void WithdrawScreen(vector <StClient>& Clients)
+{
+	cout << "\n-------------------------------------\n";
+	cout << "\tWithdraw Screen";
+	cout << "\n-------------------------------------\n\n";
+	Withdraw(Clients, 3000);
+}
+
+
+void ReturnMainMenuScreen()
+{
+	cout << "\nPress Any Key To Go Back To Main Menu...";
 	system("pause>0");
 
 
 }
-void ExecuteOperation(enOperationType OperationType, string FileName)
+void ReturnTransactionsMenuScreen()
 {
+	cout << "\nPress Any Key To Go Back To Transactions Menu...";
+	system("pause>0");
 
-	switch (OperationType)
-	{
-	case enOperationType::Show:
-	{
-		system("cls");
-		ShowClientsScreen(FileName);
-		ReturnMainMenueScreen();
-		break;
-	}
-	case enOperationType::Add:
-	{
-		system("cls");
-		AddClientScreen(FileName);
-		ReturnMainMenueScreen();
-		break;
-	}
-	case enOperationType::Delete:
-	{
-		system("cls");
-		DeleteClientScreen(FileName);
-		ReturnMainMenueScreen();
-		break;
-	}
-	case enOperationType::Update:
-	{
-		system("cls");
-		UpdateClientScreen(FileName);
-		ReturnMainMenueScreen();
-		break;
-	}
-	case enOperationType::Find:
-	{
-		system("cls");
-		FindClientScreen(FileName);
-		ReturnMainMenueScreen();
-		break;
-	}
-	case enOperationType::Exit:
-	{
-		system("cls");
-		ExitScreen();
-		break;
-	}
-	}
 
 }
+
+
+void ExecuteTransaction(vector <StClient>& Clients, const string& FileName)
+{
+	short TransactionType;
+	do
+	{
+		TransactionsMenuScreen();
+		TransactionType = ReadTransactionType();
+		switch (TransactionType)
+		{
+		case enTransactionsType::enDeposit:
+		{
+			system("cls");
+			DepositScreen(Clients);
+			SaveClientsToFile(FileName, Clients);
+			ReturnTransactionsMenuScreen();
+
+			break;
+		}
+		case enTransactionsType::enWithdraw:
+		{
+			system("cls");
+			WithdrawScreen(Clients);
+			SaveClientsToFile(FileName, Clients);
+			ReturnTransactionsMenuScreen();
+
+			break;
+		}
+		case enTransactionsType::enShowBalances:
+		{
+			system("cls");
+			ShowBalancesList(Clients);
+			ReturnTransactionsMenuScreen();
+
+			break;
+		}
+		case enTransactionsType::enMainMenu:
+		{
+
+			return;
+
+		}
+		}
+	} while (TransactionType != enTransactionsType::enMainMenu);
+}
+void ExecuteOperation(vector <StClient>& Clients, const string& FileName)
+{
+
+	short OperationType;
+
+
+
+
+	do
+	{
+
+		MainMenuScreen();
+		OperationType = ReadOperationType();
+
+		switch (OperationType)
+		{
+		case enOperationType::enShow:
+		{
+			system("cls");
+			ShowClientsList(Clients);
+			ReturnMainMenuScreen();
+			break;
+		}
+		case enOperationType::enAdd:
+		{
+			system("cls");
+			AddClientScreen(Clients);
+			SaveClientsToFile(FileName, Clients);
+			ReturnMainMenuScreen();
+
+			break;
+		}
+		case enOperationType::enDelete:
+		{
+			system("cls");
+			DeleteClientScreen(Clients);
+			SaveClientsToFile(FileName, Clients);
+			ReturnMainMenuScreen();
+			break;
+		}
+		case enOperationType::enUpdate:
+		{
+			system("cls");
+			UpdateClientScreen(Clients);
+			SaveClientsToFile(FileName, Clients);
+			ReturnMainMenuScreen();
+			break;
+		}
+		case enOperationType::enFind:
+		{
+			system("cls");
+			FindClientScreen(Clients);
+			ReturnMainMenuScreen();
+			break;
+		}
+		case enOperationType::enTransactions:
+		{
+			ExecuteTransaction(Clients, FileName);
+			SaveClientsToFile(FileName, Clients);
+			break;
+		}
+		case enOperationType::enExit:
+		{
+			system("cls");
+			ExitScreen();
+			return;
+		}
+		}
+
+	} while (OperationType != enOperationType::enExit);
+
+}
+
 void Start()
 {
 
 	string FileName = "ClientFile.txt";
-	short OperationType;
-	do
-	{
-		MainMenueScreen();
-		OperationType = ReadOperationType();
-		ExecuteOperation((enOperationType)OperationType, FileName);
-	} while (OperationType != 6);
+	vector <StClient> Clients = LoadClientDataFromFile(FileName);
+	ExecuteOperation(Clients, FileName);
+
 
 
 }
 int main()
 {
+
 	Start();
-	system("pause>0");
+
 }
