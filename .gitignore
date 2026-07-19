@@ -32,3 +32,14 @@ x86/
 *.exe
 *.dll
 *.lib
+
+# Visual Studio files
+.vs/
+x64/
+Debug/
+Release/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
