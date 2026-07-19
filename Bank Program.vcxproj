@@ -124,6 +124,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bank.cpp" />
+    <ClCompile Include="ClientService.cpp" />
+    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="UserService.cpp" />
+    <ClCompile Include="Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="ClientServices.h" />
+    <ClInclude Include="Enum.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="UserServices.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

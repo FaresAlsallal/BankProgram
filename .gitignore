@@ -1,0 +1,34 @@
+# Visual Studio cache and tracking files
+.vs/
+MemoryCaptures/
+vcpkg_installed/
+
+# Build output directories
+Debug/
+Release/
+x64/
+x86/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio system and database files
+*.opensdf
+*.sdf
+*.sublime-workspace
+*.suo
+*.db
+*.opendb
+*.user
+*.userosscache
+*.sln.docstates
+
+# Compiler and linker outputs
+*.obj
+*.ilk
+*.pdb
+*.tlog
+*.lastbuildstate
+*.idb
+*.exe
+*.dll
+*.lib
