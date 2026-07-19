@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include "Client.h"
-#include "User.h"
+#include "Model/Client.h"
+#include "Model/User.h"
 
 using namespace std;
 

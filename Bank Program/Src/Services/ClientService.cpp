@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ClientServices.h"
+#include "Services/ClientServices.h"
 
-#include "Utils.h"
-#include "FileManager.h"
+#include "Utils/Utils.h"
+#include "Utils/FileManager.h"
 
 #include <iostream>
 #include <iomanip>

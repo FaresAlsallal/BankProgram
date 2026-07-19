@@ -13,60 +13,60 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Models">
-      <UniqueIdentifier>{6ece3566-8928-41a2-8792-bccd0168604d}</UniqueIdentifier>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{266bca62-eb5e-4124-b60e-a531bf3fd2e2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Services">
-      <UniqueIdentifier>{f3d0e5c1-7167-40a7-aac4-90aaf8d3f85d}</UniqueIdentifier>
+      <UniqueIdentifier>{bf47bfa5-60ff-4546-9de5-e7926787d029}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{d7b1577e-bac0-4b5f-b167-f90df250b0c9}</UniqueIdentifier>
+      <UniqueIdentifier>{c1b9cb37-3e0e-495b-8319-8c357509a148}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Services">
-      <UniqueIdentifier>{6038b1a7-f105-43a4-b49c-fad9da3c5ffe}</UniqueIdentifier>
+      <UniqueIdentifier>{5e675025-3c7e-4e1e-b253-966b42bf9750}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{68eae72d-45e8-4944-a24d-eeb2e028f812}</UniqueIdentifier>
+      <UniqueIdentifier>{ac73d04f-b598-4929-9614-8482d6828a3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bank.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UserService.cpp">
-      <Filter>Source Files\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientService.cpp">
-      <Filter>Source Files\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="Bank Program\Src\Utils\FileManager.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FileManager.cpp">
+    <ClCompile Include="Bank Program\Src\Utils\Utils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Bank Program\Src\Services\ClientService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Bank Program\Src\Services\UserService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Bank Program\Src\Bank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h">
-      <Filter>Header Files\Models</Filter>
+    <ClInclude Include="Bank Program\Include\Model\Client.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Header Files\Models</Filter>
+    <ClInclude Include="Bank Program\Include\Model\User.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="ClientServices.h">
-      <Filter>Header Files\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="UserServices.h">
-      <Filter>Header Files\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
+    <ClInclude Include="Bank Program\Include\Utils\Enum.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Enum.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Bank Program\Include\Utils\FileManager.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Bank Program\Include\Utils\Utils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Bank Program\Include\Services\ClientServices.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Bank Program\Include\Services\UserServices.h">
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

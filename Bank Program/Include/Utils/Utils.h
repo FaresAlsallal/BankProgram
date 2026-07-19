@@ -3,9 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "Client.h"
-#include "User.h"
-#include "Enum.h"
+#include "Model/Client.h"
+#include "Model/User.h"
+#include "Utils/Enum.h"
 
 using namespace std;
 

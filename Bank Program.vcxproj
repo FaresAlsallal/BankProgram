@@ -18,6 +18,22 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bank Program\Src\Bank.cpp" />
+    <ClCompile Include="Bank Program\Src\Services\ClientService.cpp" />
+    <ClCompile Include="Bank Program\Src\Services\UserService.cpp" />
+    <ClCompile Include="Bank Program\Src\Utils\FileManager.cpp" />
+    <ClCompile Include="Bank Program\Src\Utils\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bank Program\Include\Model\Client.h" />
+    <ClInclude Include="Bank Program\Include\Model\User.h" />
+    <ClInclude Include="Bank Program\Include\Services\ClientServices.h" />
+    <ClInclude Include="Bank Program\Include\Services\UserServices.h" />
+    <ClInclude Include="Bank Program\Include\Utils\Enum.h" />
+    <ClInclude Include="Bank Program\Include\Utils\FileManager.h" />
+    <ClInclude Include="Bank Program\Include\Utils\Utils.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -102,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\jkkkj\source\repos\Bank Program\Bank Program\Include;$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,22 +139,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Bank.cpp" />
-    <ClCompile Include="ClientService.cpp" />
-    <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="UserService.cpp" />
-    <ClCompile Include="Utils.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Client.h" />
-    <ClInclude Include="ClientServices.h" />
-    <ClInclude Include="Enum.h" />
-    <ClInclude Include="User.h" />
-    <ClInclude Include="FileManager.h" />
-    <ClInclude Include="UserServices.h" />
-    <ClInclude Include="Utils.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
