@@ -1,46 +1,55 @@
-# 🏦 Advanced Banking System
+Markdown
+# 🏦 Bank Management System (V2.5.0)
 
-**Advanced Banking System** is a robust console-based application built in C++. It simulates real-world banking operations, featuring secure multi-level authentication, comprehensive user administration, and full client account management.
+A secure, performance-optimized, console-based Banking Management System built from the ground up using modern **C++** structural concepts. This release features a complete architecture refactoring to separate logical components and interfaces, making the code highly maintainable and clean.
 
----
-
-## 🚀 What's New (Latest Updates)
-
-- **Secure Login Menu:** Added an authentication layer to restrict system access based on user roles (Admin / Staff).
-- **User Management (Manage Users):** A dedicated administrative panel to Add, Update, Delete, and List system users/permissions.
-- **Architectural Refactoring:** Re-organized the entire project into a clean, professional folder structure (`src/` and `include/`) for better maintainability.
-
----
-
-## ✨ Features
-
-### 🔐 Security & Access Control
-- **Multi-Level Login:** Prevents unauthorized access to sensitive financial records.
-- **User Management:** Complete CRUD operations for system employees/operators.
-
-### 💼 Banking Operations
-- **Client Management:** Add, update, delete, and search client profiles.
-- **Transactions Panel:** Perform instant, secure deposits and withdrawals.
-- **Financial Insights:** View individual balances and calculate total capital pooled across all clients.
-
-### 🛡️ System Robustness
-- **Input Validation:** Strict error-handling to completely block illegal inputs or crashing operations.
-- **Persistent Storage:** Automated data saving and loading from local text files.
-- **Safety Confirmations:** Prompted confirmations prior to executing high-risk data changes (deletions/transfers).
+## 🚀 Key Features
+* **User Management & Login Menu:** Secure access separation with dedicated panels for Admins and regular Users.
+* **Client Management:** Comprehensive operations to create, update, delete, and view bank clients.
+* **Robust File-Based Database:** Persistent data storage using optimized system structures.
+* **Refactored Architecture:** Full modularization of headers and source definitions.
 
 ---
 
-## 📂 File Structure
+## 📁 Repository Structure
+The project follows a flat, modern C++ directory layout to maximize clarity for open-source contributors and reviewers:
 
-```text
-├── 📁 include/           # Head/Interface files (.h)
-│   ├── ClientServices.h
-│   ├── UserServices.h
-│   └── ...
-├── 📁 src/               # Implementation files (.cpp)
-│   ├── Bank.cpp          # Main Entry point
-│   ├── ClientService.cpp
-│   ├── UserService.cpp
-│   └── ...
-├── ClientFile.txt        # Encapsulated data storage
-└── .gitignore            # Clean environment config (omits IDE/build junk)
+* 📁 **`Include/`** — Houses all header files (`.h`) organized by logical layer:
+  * 📁 `Model/` : Data blueprints (`Client.h`, `User.h`)
+  * 📁 `Services/` : Business logic definitions
+  * 📁 `Utils/` : Helper mechanisms and system wrappers
+* 📁 **`Src/`** — Contains the implementation source files (`.cpp`) that drive the application's core logic.
+* 📄 **`Bank Program.vcxproj`** — The native Visual Studio project configuration mapping for local compilation.
+
+---
+
+## 🔑 Default Credentials for Testing
+To comply with security best practices, the production user-database files are omitted from source control. A default testing file with an administrative user is included for immediate environment validation:
+
+* **Username:** `Admin`
+* **Password:** `1111`
+
+---
+
+## 🛠️ How to Run & Build Local Instance
+
+### Prerequisites
+* **Windows OS**
+* **Microsoft Visual Studio IDE** (configured with the *Desktop development with C++* workload).
+
+### Steps:
+1. Clone this repository to your local machine:
+   ```bash
+   git clone [https://github.com/FaresAlsallal/BankProgram.git](https://github.com/FaresAlsallal/BankProgram.git)
+Open Visual Studio.
+
+Choose Open a project or solution and select the Bank Program.vcxproj file from the root directory. (Visual Studio will automatically generate a localized .sln file matching your system architecture).
+
+Set your build target configuration to Debug | x64 or Release | x64.
+
+Press Ctrl + Shift + B to compile, then press F5 to run the application safely.
+
+👤 Author
+Fares Alsallal — Lead Software Engineer
+
+GitHub Profile: FaresAlsallal
